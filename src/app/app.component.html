@@ -1,0 +1,32 @@
+
+   <div class="wrapper ">
+    <div class="sidebar" data-color="danger" data-background-color="white" data-image="assets/img/sidebar-1.jpg">
+      <div class="logo">
+        <a href="#" class="simple-text">
+          <img src="assets/img/logo-alex.png" class="logo-normal" alt="logo">
+        </a>
+      </div>
+      <!-- menu -->
+      <app-menu></app-menu>
+      <!-- menu -->
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <app-navbar></app-navbar>
+      <!-- Navbar -->
+      <!-- contenedor -->
+      <div class="content">
+        <div class="container-fluid">
+           <router-outlet></router-outlet>
+        </div>
+      </div>
+      <!-- contenedor -->
+      <!-- footer -->
+      <footer class="footer">
+        <div class="container-fluid">         
+          <app-footer></app-footer>
+        </div>
+      </footer>
+      <!-- footer -->
+    </div>
+  </div>

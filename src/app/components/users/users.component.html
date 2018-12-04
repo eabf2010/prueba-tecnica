@@ -1,0 +1,199 @@
+<div class="row animated fadeIn">
+    <div class="col-md-12">
+
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <div class="row">
+            <div class="col-md-10">
+              <h4 class="card-title mt-0"> Usuarios</h4>
+              <p *ngIf="!watchUsers" class="card-category">Lista de usuarios</p>
+              <p *ngIf="watchUsers" class="card-category">{{ userSelected }}</p>
+            </div>
+            <div class="col-md-2">
+              <button type="submit"
+                    *ngIf="watchUsers" 
+                    class="btn link-danger"     
+                    (click)="previous()">
+                <i class="material-icons mrg-left">arrow_back_ios</i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+          <div class="card-body body-wrap">
+            <div class="tab-content">
+              <div class="tab-pane active" id="users" *ngIf="afterCheck">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead class="">
+                      <th>
+                        ID
+                      </th>
+                      <th>
+                        Nombre
+                      </th>
+                      <th>
+                        email
+                      </th>
+                      <th>
+                        Telf
+                      </th>
+                      <th>
+                        Ciudad
+                      </th>
+                    </thead>
+                    <tbody *ngFor="let array of arrayUsers">
+                      <tr>
+                        <td>
+                          {{ array.id }}
+                        </td>
+                        <td>
+                          {{ array.name }}
+                        </td>
+                        <td>
+                          {{ array.email }}
+                        </td>
+                        <td>
+                          {{ array.phone }}
+                        </td>
+                        <td>
+                          {{ array.city }}
+                        </td>
+                        <td class="td-actions  action-width">
+                          <span class="nav-tabs-title"></span>
+                          <ul class="nav" data-tabs="tabs">
+                            <li class="nav-item">
+                              <button type="button" 
+                                      rel="tooltip" 
+                                      title="Posts de {{ array.name }}" 
+                                      class="btn btn-primary btn-link btn-sm" 
+                                      href="#post-users" 
+                                      data-toggle="tab"
+                                      (click)="postUser( array.id )">
+                                <i class="material-icons">dashboard</i>
+                                <div class="ripple-container"></div>
+                              </button>
+                            </li>
+                          </ul>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <!--Seccion post/users-->
+              <div class="tab-pane animated fadeIn" id="post-users" *ngIf="!afterCheck">
+                <table class="table">
+                <thead class="">
+                    <th>
+                      ID Post
+                    </th>
+                    <th>
+                      Titulo post
+                    </th>
+                    <th>
+                      Cuerpo post
+                    </th>
+                  </thead>
+                  <tbody *ngFor="let array of arrayPostsUsers">
+                    <tr>
+                      <td>
+                        {{ array.id }}
+                      </td>
+                      <td>
+                        {{ array.title }}
+                      </td>
+                      <td>
+                        {{ array.body }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!--Seccion post/users-->
+            </div>
+          </div>
+       </div>
+
+      <hr>
+
+      <!--Seccion registro de usuario-->
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Nuevo Usuario</h4>
+          <p class="card-category">Ingrese los datos solicitados</p>
+        </div>
+        <div class="card-body">
+          <form name="userForm" [formGroup]="userForm" novalidate>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Nombre completo</label>
+                  <input type="text" 
+                         class="form-control" 
+                         formControlName="name"
+                         [(ngModel)]="user.name">
+                    <span class="form-error" *ngIf="userFormErrors.name.required">
+                        El Nombre es obligatorio
+                    </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Telf</label>
+                  <input type="text" 
+                         class="form-control" 
+                         formControlName="phone"
+                         [(ngModel)]="user.phone">
+                    <span class="form-error" *ngIf="userFormErrors.phone.required">
+                         El Telf es obligatorio
+                    </span>
+                </div>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Email address</label>
+                  <input type="email" 
+                         class="form-control" 
+                         formControlName="email"
+                         [(ngModel)]="user.email">
+                    <span class="form-error" *ngIf="userFormErrors.email.required">
+                         El Email es obligatorio
+                    </span>
+                    <span *ngIf="!userFormErrors.email.required && userFormErrors.email.email">
+                        Ingrese una dirección de email válida
+                    </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Ciudad</label>
+                  <input type="text" 
+                         class="form-control" 
+                         formControlName="city"
+                         [(ngModel)]="user.city">
+                    <span class="form-error" *ngIf="userFormErrors.city.required">
+                         La ciudad de residencia es obligatoria
+                    </span>
+                </div>
+              </div>
+            </div>
+            
+              <button type="submit" 
+                      class="btn btn-primary pull-left"
+                      [disabled]="userForm.invalid"
+                      (click)="newUser()">Registrar</button>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div><!--Seccion registro de usuario-->
+    </div>
+    
+  </div>

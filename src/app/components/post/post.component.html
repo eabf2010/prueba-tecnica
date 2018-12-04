@@ -1,0 +1,262 @@
+<div class="row animated fadeIn">
+	<div class="col-md-12">
+      
+      <!-- Card Superior -->
+      <div class="card">
+        <!-- Header del card -->
+        <div class="card-header card-header-primary">
+          <div class="row">
+            <div class="col-md-10">
+              <h4 class="card-title mt-0"> Posts</h4>
+              <p *ngIf="!watchPost" class="card-category">Lista de posts</p>
+              <p *ngIf="watchPost" class="card-category">{{ postSelected }}</p>
+            </div>
+            <div class="col-md-2">
+              <button type="submit"
+                    *ngIf="watchPost" 
+                    class="btn link-danger"     
+                    (click)="previous()">
+                <i class="material-icons mrg-left">arrow_back_ios</i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Header del card -->
+
+          <div class="card-body body-wrap">
+            <div class="tab-content">
+              <!-- Seccion Lista Post -->
+              <div class="tab-pane active" id="profile" *ngIf="afterEdit">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="">
+                      <th>
+                        ID
+                      </th>
+                      <th>
+                        Titulo
+                      </th>
+                      <th>
+                        Cuerpo
+                      </th>
+                    </thead>
+                    <tbody *ngFor="let array of arrayPost">
+                      <tr>
+                        <td>
+                          {{ array.id }}
+                        </td>
+                        <td>
+                          {{ array.title }}
+                        </td>
+                        <td>
+                          {{ array.body }}
+                        </td>
+                        <td class="td-actions  action-width">
+                          <span class="nav-tabs-title"></span>
+                          <ul class="nav" data-tabs="tabs">
+                            <li class="nav-item">
+                              <button type="button" rel="tooltip" title="Comments" class="btn btn-primary btn-link btn-sm" (click)="findComments( array.id, array.title )" href="#comments" data-toggle="tab">
+                                <i class="material-icons">assignment</i>
+                                <div class="ripple-container"></div>
+                              </button>
+                            </li>
+                            <li class="nav-item">
+                              <button type="button" rel="tooltip" title="Editar" class="btn btn-primary btn-link btn-sm" href="#edit" (click)="editPost( array.id )" data-toggle="tab">
+                                <i class="material-icons">edit</i>
+                                <div class="ripple-container"></div>
+                              </button>
+                            </li>
+                            <li class="nav-item">
+                              <button type="button" rel="tooltip" title="Eliminar" class="btn btn-danger btn-link btn-sm" (click)="deletePosts( array.id )" data-toggle="tab">
+                                <i class="material-icons">close</i>
+                                <div class="ripple-container"></div>
+                              </button>
+                            </li>
+                            </ul>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Seccion Lista Post -->
+              
+              <!--Seccion comentarios-->
+              <div class="tab-pane animated fadeIn" id="comments" *ngIf="!afterEdit">
+
+              <table class="table">
+                <thead class="">
+                    <th>
+                      ID Comment
+                    </th>
+                    <th>
+                      Email Comment
+                    </th>
+                    <th>
+                      Titulo Comment
+                    </th>
+                    <th>
+                      Cuerpo Comment
+                    </th>
+                  </thead>
+                  <tbody *ngFor="let array of arrayPostComments">
+                    <tr>
+                      <td>
+                        {{ array.id }}
+                      </td>
+                      <td>
+                        {{ array.email }}
+                      </td>
+                      <td>
+                        {{ array.name }}
+                      </td>
+                      <td>
+                        {{ array.body }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!--Seccion comentarios-->
+
+              <!--Seccion edicion-->
+              <div class="tab-pane animated fadeIn" id="edit" *ngIf="!afterEdit">
+
+                <div class="card-body">
+                  
+                  <form name="postFormEdit" [formGroup]="postFormEdit"novalidate>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Usuario del Post</label>
+                          <select class="form-control"
+                                  id="userId"
+                                  name="userId">
+                          <option *ngFor="let data of arrayUsers"
+                                  [value]="data.id"
+                                  [selected]="data.id == postData">
+                                  {{ data.name }}
+                          </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <input type="text" 
+                                 class="form-control" 
+                                 formControlName="title"
+                                 placeholder="Titulo del Post"
+                                 id="tit"
+                                 value="{{ postDataTitle }}"
+                                 [(ngModel)]="postEdit.title">
+                            <span class="form-error" *ngIf="postFormEditErrors.title.required">
+                                 El Titulo es obligatorio
+                            </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <textarea class="form-control"
+                                    formControlName="body"
+                                    placeholder="Cuerpo del Post"
+                                    [(ngModel)]="postEdit.body"
+                                    value="{{ postDataBody }}" 
+                                    rows="4"></textarea>
+                            <span class="form-error" *ngIf="postFormEditErrors.body.required">
+                                 El Cuerpo del post es obligatorio
+                            </span>
+                        </div>
+                      </div>
+                    </div>
+                      <button type="button" 
+                              class="btn btn-primary pull-left"
+                              [disabled]="postFormEdit.invalid"
+                              (click)="edicionPost( idPost )">Editar post</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div><!--Seccion edicion-->
+            </div>
+          </div>
+      </div>
+      <!-- Card Superior -->
+      
+      <hr>
+  
+      <!-- Card Inferior -->
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Nuevo Post</h4>
+          <p class="card-category">Ingrese los datos solicitados</p>
+        </div>
+        <div class="card-body">
+          <form name="postForm" [formGroup]="postForm" novalidate>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Usuario</label>
+                  <select class="form-control"
+                          id="userId"
+                          name="userId"
+                          formControlName="userId"
+                          [(ngModel)]="post.userId">
+                  <option value="">
+                          Seleccione un usuario
+                  </option>
+                  <option *ngFor="let data of arrayUsers"
+                          [value]="data.id">
+                          {{ data.name }}
+                  </option>
+                  </select>
+                  <span class="form-error" *ngIf="postFormErrors.userId.required">
+                         El Usuario es obligatorio
+                  </span>
+
+                </div>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Titulo</label>
+                  <input type="text" 
+                         class="form-control" 
+                         formControlName="title"
+                         id="tit"
+                         [(ngModel)]="post.title">
+                    <span class="form-error" *ngIf="postFormErrors.title.required">
+                         El Titulo es obligatorio
+                    </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Cuerpo</label>
+                  <textarea class="form-control"
+                            formControlName="body"
+                            [(ngModel)]="post.body" 
+                            rows="4"></textarea>
+                    <span class="form-error" *ngIf="postFormErrors.body.required">
+                         El Cuerpo del post es obligatorio
+                    </span>
+                </div>
+              </div>
+            </div>
+              <button type="submit" 
+                      class="btn btn-primary pull-left"
+                      [disabled]="postForm.invalid"
+                      (click)="newPost()">Nuevo post</button>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+      <!-- Card Inferior -->
+      
+    </div>
+</div>

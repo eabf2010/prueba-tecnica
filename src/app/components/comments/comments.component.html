@@ -1,0 +1,248 @@
+<div class="row animated fadeIn">
+	<div class="col-md-12">
+      
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <div class="row">
+            <div class="col-md-10">
+              <h4 class="card-title mt-0"> Comments</h4>
+              <p *ngIf="!watchComment" class="card-category">Lista de comments</p>
+              <p *ngIf="watchComment" class="card-category">{{ commentSelected }}</p>
+            </div>
+            <div class="col-md-2">
+              <button type="submit"
+                    *ngIf="watchComment" 
+                    class="btn link-danger"     
+                    (click)="previous()">
+                <i class="material-icons mrg-left">arrow_back_ios</i>
+              </button>
+            </div>
+          </div>
+
+        </div>     
+
+          <div class="card-body body-wrap">
+            <div class="tab-content">
+              <div class="tab-pane active" id="profile" *ngIf="afterEdit">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="">
+                      <th>
+                        ID
+                      </th>
+                      <th>
+                        Titulo
+                      </th>
+                      <th>
+                        Cuerpo
+                      </th>
+                    </thead>
+                    <tbody *ngFor="let array of arrayComments">
+                      <tr>
+                        <td>
+                          {{ array.id }}
+                        </td>
+                        <td>
+                          {{ array.name }}
+                        </td>
+                        <td>
+                          {{ array.body }}
+                        </td>
+                        <td class="td-actions  action-width">
+                          <span class="nav-tabs-title"></span>
+                          <ul class="nav" data-tabs="tabs">
+                            <li class="nav-item">
+                              <button type="button" rel="tooltip" title="Editar" class="btn btn-primary btn-link btn-sm" href="#edit" (click)="editComment( array.id )" data-toggle="tab">
+                                <i class="material-icons">edit</i>
+                                <div class="ripple-container"></div>
+                              </button>
+                            </li>
+                            <li class="nav-item">
+                              <button type="button" rel="tooltip" title="Eliminar" class="btn btn-danger btn-link btn-sm" (click)="deleteComments( array.id )" data-toggle="tab">
+                                <i class="material-icons">close</i>
+                                <div class="ripple-container"></div>
+                              </button>
+                            </li>
+                            </ul>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+
+              <!--Seccion edit comments-->
+              <div class="tab-pane" id="edit" *ngIf="!afterEdit">
+
+                <div class="card-body">
+                  <form name="commentsFormEdit" [formGroup]="commentsFormEdit" novalidate>
+		            <div class="row">
+		              <div class="col-md-6">
+		                <div class="form-group">
+		                  <label class="bmd-label-floating">Posts</label>
+		                  <select class="form-control"
+		                          id="postId"
+		                          name="postId">
+		                  <option *ngFor="let data of arrayPost"
+		                          [value]="data.id"
+                              [selected]="data.id == postData">
+		                          {{ data.title }}
+		                  </option>
+		                  </select>
+		                </div>
+		              </div>
+		              </div>
+		              <div class="row">
+		              <div class="col-md-12">
+		                <div class="form-group">
+		                  <input type="email" 
+		                         class="form-control" 
+		                         formControlName="email"
+                             placeholder="Email" 
+                             value="{{ commentDataEmail }}"
+		                         [(ngModel)]="commentsEdit.email">
+		                    <span class="form-error" *ngIf="commentsFormEditErrors.email.required">
+		                         El email del comentario es obligatorio
+		                    </span>
+		                    <span *ngIf="!commentsFormEditErrors.email.required && commentsFormEditErrors.email.email">
+                             Ingrese una dirección de email válida
+                        </span>
+		                </div>
+		              </div>
+		            </div>
+
+		            <div class="row">
+		              <div class="col-md-12">
+		                <div class="form-group">
+		                  <input type="text" 
+		                         class="form-control"
+                             placeholder="Nombre del comentario" 
+		                         formControlName="name"
+                             value="{{ commentDataName }}"
+		                         [(ngModel)]="commentsEdit.name">
+		                    <span class="form-error" *ngIf="commentsFormEditErrors.name.required">
+		                         El Nombre del comentario es obligatorio
+		                    </span>
+		                </div>
+		              </div>
+		            </div>
+
+		            <div class="row">
+		              <div class="col-md-12">
+		                <div class="form-group">
+		                  <textarea class="form-control"
+                                placeholder="Cuerpo del Comentario"
+		                            formControlName="body"
+                                value="{{ commentDataBody }}"
+		                            [(ngModel)]="commentsEdit.body" 
+		                            rows="4"></textarea>
+		                    <span class="form-error" *ngIf="commentsFormEditErrors.body.required">
+		                         El Cuerpo del Comentario del post es obligatorio
+		                    </span>
+		                </div>
+		              </div>
+		            </div>
+		              <button type="submit" 
+		                      class="btn btn-primary pull-left"
+		                      [disabled]="commentsFormEdit.invalid"
+		                      (click)="editarComment( idComment )">Editar Commentario</button>
+		            <div class="clearfix"></div>
+		          </form>
+                </div>
+              </div><!--Seccion edit comments-->
+            </div>
+          </div>
+      </div>
+      
+      <hr>
+
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Nuevo Comment</h4>
+          <p class="card-category">Ingrese los datos solicitados</p>
+        </div>
+        <div class="card-body">
+          <form name="commentsForm" [formGroup]="commentsForm" novalidate>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Posts</label>
+                  <select class="form-control"
+                          id="postId"
+                          name="postId"
+                          formControlName="postId"
+                          [(ngModel)]="comments.postId">
+                  <option value="">
+                          Seleccione un Post
+                  </option>
+                  <option *ngFor="let data of arrayPost"
+                          [value]="data.id">
+                          {{ data.title }}
+                  </option>
+                  </select>
+                  <span class="form-error" *ngIf="commentsFormErrors.postId.required">
+                         El Post es obligatorio
+                  </span>
+                </div>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Email</label>
+                  <input type="email" 
+                         class="form-control" 
+                         formControlName="email"
+                         [(ngModel)]="comments.email">
+                    <span class="form-error" *ngIf="commentsFormErrors.email.required">
+                         El Email es obligatorio
+                    </span>
+                    <span *ngIf="!commentsFormErrors.email.required && commentsFormErrors.email.email">
+                        Ingrese una dirección de email válida
+                    </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Titulo del comentario</label>
+                  <input type="text" 
+                         class="form-control" 
+                         formControlName="name"
+                         [(ngModel)]="comments.name">
+                    <span class="form-error" *ngIf="commentsFormErrors.name.required">
+                         El Titulo del comentario es obligatorio
+                    </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Cuerpo del Comentario</label>
+                  <textarea class="form-control"
+                            formControlName="body"
+                            [(ngModel)]="comments.body" 
+                            rows="4"></textarea>
+                    <span class="form-error" *ngIf="commentsFormErrors.body.required">
+                         El Cuerpo del Comentario del post es obligatorio
+                    </span>
+                </div>
+              </div>
+            </div>
+              <button type="submit" 
+                      class="btn btn-primary pull-left"
+                      [disabled]="commentsForm.invalid"
+                      (click)="newComment()">Nuevo Commentario</button>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
