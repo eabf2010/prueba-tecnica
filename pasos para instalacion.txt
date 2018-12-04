@@ -1,0 +1,12 @@
+
+Pasos para ejecutar el proyecto
+
+1- Descargar o clonar el proyecto
+2- abrir consola
+3- entrar a la ubicacion del proyecto ej: cd proyecto-tecnico
+4- ejecutar npm install (debe estar instalado node previamente)
+5- ejecutar ng serve o npm start para levantar el servidor de la pag, ej:localhost:4200/prueba-tecnica
+5- instalar json-server ( https://jsonplaceholder.typicode.com/ )
+6- cortar y pegar el archivo db.json dentro de la carpeta donde se instale el json-server
+7- ejecutar el json server ( json-server --watch db.json )
+8- realizar pruebas en el proyecto
